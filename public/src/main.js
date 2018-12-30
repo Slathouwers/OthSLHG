@@ -8,7 +8,7 @@ const WHITE = 'W';
 const BG_COLOR = "green";
 const BDR_COLOR = "silver";
 
-class Position {
+class Board {
     constructor() {
         this.pArr = this.getEmptyArray();
         this.gameInit();
@@ -35,7 +35,7 @@ class Position {
     }
 }
 
-
+// IIFE
 function othello() {
     "use strict";
 
@@ -50,8 +50,8 @@ function othello() {
     let canvasBg = document.getElementById("background-layer");
     let ctxBg = canvasBg.getContext("2d");
 
-    let position = new Position();
-    console.log(position);
+    let board = new Board();
+    console.log(board);
 
     drawBg();
     drawGame();
@@ -59,7 +59,7 @@ function othello() {
 
 
     function drawGame() {
-        let ui = position.pArr;
+        let ui = board.pArr;
         let rows = ui.length;
         let cols = ui[0].length;
         for (let i = 0; i < rows; i++) {
