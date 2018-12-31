@@ -1,54 +1,64 @@
 /* jshint esversion: 6 */
-const ROWS = 8;
-const COLS = 8;
-const SIZE = 50;
-const EMPTY = '-';
-const BLACK = 'B';
-const WHITE = 'W';
-const BG_COLOR = "green";
-const BDR_COLOR = "silver";
-
-class Board {
-    constructor() {
-        this.pArr = this.getEmptyArray();
-        this.gameInit();
-    }
-
-    getEmptyArray() {
-        let arr = [];
-        for (let i = 0; i < ROWS; i++) {
-            arr[i] = [];
-            for (let j = 0; j < COLS; j++) {
-                arr[i][j] = EMPTY;
-            }
-        }
-        return arr;
-    }
-
-    gameInit() {
-        let startRow = ROWS / 2 - 1;
-        let startCol = COLS / 2 - 1;
-        this.pArr[startRow][startCol] = WHITE;
-        this.pArr[startRow][startCol + 1] = BLACK;
-        this.pArr[startRow + 1][startCol] = BLACK;
-        this.pArr[startRow + 1][startCol + 1] = WHITE;
-    }
-}
 
 // IIFE
-function othello() {
+var othelloMVC = (function othelloMVC(othello) {
     "use strict";
 
+    const SIZE = 50;
+    const BG_COLOR = "green";
+    const BDR_COLOR = "black";
 
-    let canvasUi = document.getElementById("ui-layer");
-    canvasUi.addEventListener("click", uiClick, false);
-    let ctxUi = canvasUi.getContext("2d");
+    //UIView
+    class OthelloView{
+        constructor(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector){
+            this._model=gameModel;
+            this._boardView=boardCanvasSelector;
+            this._uiSelector=uiCanvasSelector;
 
-    let canvasGame = document.getElementById("game-layer");
-    let ctxGame = canvasGame.getContext("2d");
+            this.drawBg();
+            this.drawBoard();
+            this.drawUi();
 
-    let canvasBg = document.getElementById("background-layer");
-    let ctxBg = canvasBg.getContext("2d");
+            //Event Listeners
+            this._model.board.onCellChanged.attach(
+                (row,col,state) => this.updateCellState(row,col,state)
+            );
+        }
+
+        drawBoard() {
+            let ui = board.pArr;
+            let rows = ui.length;
+            let cols = ui[0].length;
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < rows; j++) {
+                    let p = ui[i][j];
+                    if (p != EMPTY) {
+                        drawPiece(i, j, p);
+                    }
+    
+                }
+            }
+        }
+        updateCellState(row,col,state){
+            let brdCtx= boardCanvas.getContext("2d");
+            brdCtx.beginPath();
+            brdCtx.fillStyle = state;
+            brdCtx.arc(row * SIZE + SIZE / 2, col * SIZE + SIZE / 2, 20, 0, Math.PI * 2);
+            brdCtx.fill();
+        }
+        
+    }
+    // let canvasUi = document.getElementById("ui-layer");
+    // canvasUi.addEventListener("click", uiClick, false);
+    // let ctxUi = canvasUi.getContext("2d");
+
+    // //BoardView
+    // let canvasGame = document.getElementById("game-layer");
+    // let ctxGame = canvasGame.getContext("2d");
+
+    // //BackgroundView
+    // let canvasBg = document.getElementById("background-layer");
+    // let ctxBg = canvasBg.getContext("2d");
 
     let board = new Board();
     console.log(board);
@@ -58,20 +68,7 @@ function othello() {
     drawUi();
 
 
-    function drawGame() {
-        let ui = board.pArr;
-        let rows = ui.length;
-        let cols = ui[0].length;
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < rows; j++) {
-                let p = ui[i][j];
-                if (p != EMPTY) {
-                    drawPiece(i, j, p);
-                }
 
-            }
-        }
-    }
 
 
     function drawUi() {
@@ -92,12 +89,7 @@ function othello() {
         }
     }
 
-    function drawPiece(r, c, color) {
-        ctxUi.beginPath();
-        ctxUi.fillStyle = color === BLACK ? "black" : "white";
-        ctxUi.arc(c * SIZE + SIZE / 2, r * SIZE + SIZE / 2, 20, 0, Math.PI * 2);
-        ctxUi.fill();
-    }
+    
 
     function drawBgSquare(r, c) {
         ctxBg.beginPath();
@@ -107,7 +99,8 @@ function othello() {
         ctxBg.stroke();
         ctxBg.fill();
     }
+
     function uiClick(event) {
-        
+
     }
-}
+})(othelloMVC || {});
