@@ -9,44 +9,44 @@ var othelloMVC = (function othelloMVC(othello) {
     const BDR_COLOR = "black";
 
     //UIView
-    class OthelloView{
-        constructor(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector){
-            this._model=gameModel;
-            this._boardView=boardCanvasSelector;
-            this._uiView=uiCanvasSelector;
-            this._bgView=bgCanvasSelector;
+    class OthelloView {
+        constructor(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector) {
+            
+            this._model = gameModel;
 
+            this._boardView = boardCanvasSelector;
+            this._uiView = uiCanvasSelector;
+            this._bgView = bgCanvasSelector;
+
+            // init
             this.drawBg();
             this.drawBoard();
             this.drawUi();
 
             //Event Listeners
-            this._model.board.onCellChanged.attach(
-                (row,col,state) => this.updateCellState(row,col,state)
-            );
+            
         }
 
         drawBoard() {
             let board = _model.board;
-            let dims =8;
+            let dims = 8;
             for (let rows = 0; row < dims; row++) {
                 for (let col = 0; col < dims; col++) {
                     let p = ui[row][col];
                     if (p != EMPTY) {
                         updateCellState(row, col, p);
                     }
-    
                 }
             }
         }
-        updateCellState(row,col,state){
-            let brdCtx= boardCanvas.getContext("2d");
+        updateCellState(row, col, state) {
+            let brdCtx = _boardView.getContext("2d");
             brdCtx.beginPath();
             brdCtx.fillStyle = state;
             brdCtx.arc(row * SIZE + SIZE / 2, col * SIZE + SIZE / 2, 20, 0, Math.PI * 2);
             brdCtx.fill();
         }
-        
+
     }
     // let canvasUi = document.getElementById("ui-layer");
     // canvasUi.addEventListener("click", uiClick, false);
@@ -60,12 +60,12 @@ var othelloMVC = (function othelloMVC(othello) {
     // let canvasBg = document.getElementById("background-layer");
     // let ctxBg = canvasBg.getContext("2d");
 
-    let board = new Board();
-    console.log(board);
+    // let board = new Board();
+    // console.log(board);
 
-    drawBg();
-    drawGame();
-    drawUi();
+    // drawBg();
+    // drawGame();
+    // drawUi();
 
 
 
@@ -89,7 +89,7 @@ var othelloMVC = (function othelloMVC(othello) {
         }
     }
 
-    
+
 
     function drawBgSquare(r, c) {
         ctxBg.beginPath();

@@ -18,13 +18,13 @@ var othelloMVC = (function othelloMVC(othello) {
 
         notify(args) {                          // loop through, calling attached listeners
             this._listeners.forEach(
-                (v, i) => this._listeners[i](this._sender, args)
+                (i) => this._listeners[i](this._sender, args)
             );
         }
     }
 
     //Make public
-    othello._Event = OthelloEvent;
+    othello.Event = OthelloEvent;
 
     return othello;
 })(othelloMVC || {});
