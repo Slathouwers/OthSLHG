@@ -13,7 +13,8 @@ var othelloMVC = (function othelloMVC(othello) {
         constructor(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector){
             this._model=gameModel;
             this._boardView=boardCanvasSelector;
-            this._uiSelector=uiCanvasSelector;
+            this._uiView=uiCanvasSelector;
+            this._bgView=bgCanvasSelector;
 
             this.drawBg();
             this.drawBoard();
@@ -26,14 +27,13 @@ var othelloMVC = (function othelloMVC(othello) {
         }
 
         drawBoard() {
-            let ui = board.pArr;
-            let rows = ui.length;
-            let cols = ui[0].length;
-            for (let i = 0; i < rows; i++) {
-                for (let j = 0; j < rows; j++) {
-                    let p = ui[i][j];
+            let board = _model.board;
+            let dims =8;
+            for (let rows = 0; row < dims; row++) {
+                for (let col = 0; col < dims; col++) {
+                    let p = ui[row][col];
                     if (p != EMPTY) {
-                        drawPiece(i, j, p);
+                        updateCellState(row, col, p);
                     }
     
                 }

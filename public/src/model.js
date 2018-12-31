@@ -23,8 +23,7 @@ var othelloMVC = (function othelloMVC(othello) {
             //Init
             this._setInitialPieces();
         }
-        // Static boardcell index calculation:
-        // cell-index = row + col * DIMS
+        // Static boardcell index calculation: cell-index = row + col * DIMS
         static index(r, c) {
             return (c + r * DIMS);
         }
@@ -64,6 +63,13 @@ var othelloMVC = (function othelloMVC(othello) {
                 });
             }
         }
+        listPossibleMoves(player){
+            //TODO: generate moves for player color
+        }
+        makeAttackedBoard(index, player){
+            //TODO: place piece of player color on board and flip all vulnerable cells
+
+        }
     }
 
     class BitBoard {
@@ -99,7 +105,7 @@ var othelloMVC = (function othelloMVC(othello) {
         constructor() {
             this.playerList = [];
             this.board = new Board();
-            this.turn = new turn();
+            this.turn = new turn(this.board,player);
 
             //Events
 
@@ -108,12 +114,24 @@ var othelloMVC = (function othelloMVC(othello) {
     }
 
     class turn{
-        constructor(player, possibleMoves){
+        constructor(board,player, passCounter){
+            this.board= board;
             this.player = player;
-            this.moves = possibleMoves;
-
+            this.moves = board.listPossibleMoves;
+            this.passCounter=passCounter;
+        }
+        isForcedToPass(){
+            return this.moves.length? true:false;
+        }
+        nextPlayer(){
+            return this.player === 'black'?'white':'black';
+        }
+        makeMove(index){
+            return board.makeAttackedBoard(index, player);
         }
     }
+
+    //TODO: API public memberlist
 
     return othello;
 })(othelloMVC || {});
