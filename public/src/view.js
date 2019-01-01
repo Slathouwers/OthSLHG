@@ -10,6 +10,7 @@ var othelloMVC = (function othelloMVC(othello) {
 
     //UIView
     class OthelloView {
+        
         constructor(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector) {
             
             this._model = gameModel;
@@ -27,14 +28,21 @@ var othelloMVC = (function othelloMVC(othello) {
             
         }
 
+        drawUi() {
+            throw new Error("Method not implemented.");
+        }
+        drawBg() {
+            throw new Error("Method not implemented.");
+        }
+
         drawBoard() {
-            let board = _model.board;
+            let board = this._model.board;
             let dims = 8;
-            for (let rows = 0; row < dims; row++) {
+            for (let row = 0; row < dims; row++) {
                 for (let col = 0; col < dims; col++) {
                     let p = ui[row][col];
                     if (p != EMPTY) {
-                        updateCellState(row, col, p);
+                        this.updateCellState(row, col, p);
                     }
                 }
             }
@@ -103,4 +111,5 @@ var othelloMVC = (function othelloMVC(othello) {
     function uiClick(event) {
 
     }
+    return othello;
 })(othelloMVC || {});

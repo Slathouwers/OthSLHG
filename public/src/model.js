@@ -2,43 +2,52 @@
 
 var othelloMVC = (function othelloMVC(othello) {
     'use strict';
-    OthelloMVC.GameModel = class oModel {
+
+    const CELL_STATES = {
+        //Cells can only have 3 states
+        EMPTY: 'empty',
+        BLACK: 'black',
+        WHITE: 'white'
+    };
+
+    const DIMS = 8; //DIMS: ROWS = COLUMNS (eg. square of 8x8 has DIMS= 8)
+
+    class GameModel {
         constructor() {
             this.playerList = [];
             this.currentPlayer = '';
-            this.board = [];
+            this.board = new Board();
             this.possibleMovesList = [];
             this.passCounter = 0;
             this.hasWinner = false;
 
-            this.startGameEvent = new Event(this);
-            this.makeMoveEvent = new Event(this);
-            this.passMoveEvent = new Event(this);
-            this.gameWonEvent = new Event(this);
+            this.startGameEvent = new othello.Event(this);
+            this.makeMoveEvent = new othello.Event(this);
+            this.passMoveEvent = new othello.Event(this);
+            this.gameWonEvent = new othello.Event(this);
         }
 
         startGame() {
             //Initialize
             this.playerList = ['black', 'white'];
             this.currentPlayer = 'black';
-            this.board = new Board();
-            this.possibleMovesList = board.listPossibleMoves(currentPlayer);
+            this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
             //Notify
             this.startGameEvent.notify();
         }
 
         makeMove(move) {
-            if (possibleMovesList.length) {
+            if (this.possibleMovesList.length) {
                 this.board.updateWithMoveByPlayer(move, this.currentPlayer);
-                this.currentPlayer = nextPlayer();
+                this.currentPlayer = this.nextPlayer();
                 this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
 
             } else {
                 this.passCounter++;
-                this.currentPlayer = nextPlayer();
+                this.currentPlayer = this.nextPlayer();
                 this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
             }
-            this.hasWinner = board.judge();
+            this.hasWinner = this.board.judge();
 
             if (this.hasWinner) {
                 this.gameWonEvent.notify();
@@ -47,37 +56,40 @@ var othelloMVC = (function othelloMVC(othello) {
             }
         }
 
-        static nextPlayer() {
-            return this.player === 'black' ? 'white' : 'black';
+        nextPlayer() {
+            return this.currentPlayer === 'black' ? 'white' : 'black';
         }
 
-    };
-    //Cells can only have 3 states
-    const CELL_STATES = {
-        EMPTY: 'empty',
-        BLACK: 'black',
-        WHITE: 'white'
-    };
-    //DIMS: ROWS = COLUMNS (eg. square of 8x8 has DIMS= 8)
-    const DIMS = 8;
-
+    }
 
     class Board {
+
         // Board.cells can convert to upperboard bitmap and lowerboard bitmap
         constructor() {
             this.cells = this._emptyBoard();
-            this._bitBoard = new BitBoard();
             this._setInitialPieces();
+            this._bitBoard = new BitBoard();
         }
         // Static boardcell index calculation: cell-index = row + col * DIMS
         static index(r, c) {
             return (c + r * DIMS);
         }
+        _logBitsToConsole() {
+            this._bitBoard.setTo(this.cells);
+            let black = [this._bitBoard.blackUpper, this._bitBoard.blackLower];
+            let white = [this._bitBoard.whiteUpper, this._bitBoard.whiteLower];
+            black.forEach(b => {
+                let string = (b >>> 0).toString(2);
+                let bit32 = '0'.repeat(32 - string.length).concat(string);
+                for (let index = 0; index < 4; index++) {
+                    console.log(bit32.substr(index * 8, 8));
+                }
+            });
+        }
 
         _emptyBoard() {
             let arr = [];
             for (let row = 0; row < DIMS; row++) {
-                arr[row] = [];
                 for (let col = 0; col < DIMS; col++) {
                     arr[Board.index(row, col)] = CELL_STATES.EMPTY;
                 }
@@ -89,31 +101,36 @@ var othelloMVC = (function othelloMVC(othello) {
             let row = DIMS >> 1; // bitwise right shift operater = /2
             let col = DIMS >> 1; // bitwise right shift operater = /2
             this.setCell(row - 1, col - 1, CELL_STATES.WHITE);
-            this.setCell(row - 1, col - 0, CELL_STATES.WHITE);
-            this.setCell(row - 0, col - 1, CELL_STATES.WHITE);
+            this.setCell(row - 1, col - 0, CELL_STATES.BLACK);
+            this.setCell(row - 0, col - 1, CELL_STATES.BLACK);
             this.setCell(row - 0, col - 0, CELL_STATES.WHITE);
         }
 
-        get BitBoard() {
-            this._bitBoard.setTo(this.cells);
-            return this._bitBoard;
-        }
+        // get BitBoard() {
+        //     this._bitBoard.setTo(this.cells);
+        //     return this._bitBoard;
+        // }
 
         setCell(row, col, state) {
-            if (state === CELL_STATES.BLACK || CELL_STATES.WHITE) {
-                this.cells[index(row, col)] = state;
+            if (state == CELL_STATES.BLACK || CELL_STATES.WHITE) {
+                this.cells[Board.index(row, col)] = state;
             }
         }
 
         listPossibleMoves(player) {
+            let moves = [];
             //TODO: generate moves for player color
+            return moves || [];
         }
 
-        makeAttackedBoard(index, player) {
+        updateWithMoveByPlayer(move, currentPlayer) {
             //TODO: place piece of player color on board and flip all vulnerable cells
+            throw new Error("Method not implemented.");
         }
         judge() {
             //TODO: return bool wether or not game is finished or not
+            let isFinished;
+            return isFinished || false;
         }
     }
 
@@ -145,16 +162,13 @@ var othelloMVC = (function othelloMVC(othello) {
                 }
             }
         }
-        _logToConsole(){
-            //TODO: log bitboard to console
-            // function dec2bin(dec){
-            //     return (dec >>> 0).toString(2);
-            // }
-        }
     }
 
     //TODO: API public memberlist
 
+    let b = new Board();
+    b._logBitsToConsole();
+
+
     return othello;
 })(othelloMVC || {});
-
