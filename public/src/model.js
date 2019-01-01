@@ -51,7 +51,7 @@ var othelloMVC = (function othelloMVC(othello) {
             return this.player === 'black' ? 'white' : 'black';
         }
 
-    }
+    };
     //Cells can only have 3 states
     const CELL_STATES = {
         EMPTY: 'empty',
@@ -145,9 +145,16 @@ var othelloMVC = (function othelloMVC(othello) {
                 }
             }
         }
+        _logToConsole(){
+            //TODO: log bitboard to console
+            // function dec2bin(dec){
+            //     return (dec >>> 0).toString(2);
+            // }
+        }
     }
 
     //TODO: API public memberlist
 
     return othello;
 })(othelloMVC || {});
+
