@@ -10,10 +10,13 @@ var othelloMVC = (function othelloMVC(othello) {
                 );
             
         }
-        uiClick(sender,data){
-            console.log(data);
-            sender.uiViewClickHandler(data);
-            console.log(sender);
+        uiClick(sender,event){
+            let x = event.pageX - sender._uiView.getBoundingClientRect().left;
+            let y = event.pageY - sender._uiView.getBoundingClientRect().top;
+            let row = Math.floor(y / sender.SIZE);
+            let col = Math.floor(x / sender.SIZE);
+
+            this._model.makeMove(row, col);
         }
     }
     othello.Controler = OthelloControler;
