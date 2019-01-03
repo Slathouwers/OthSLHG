@@ -45,11 +45,11 @@ var othelloMVC = (function othelloMVC(othello) {
                 if (chosenMoveListHasIndex > -1) {
                     let choice = this.possibleMovesList[chosenMoveListHasIndex];
                     this.board = Board.createBoardWithMoveByPlayer(this.board, col, row, choice);
-                    this.possibleMovesList=[];
+                    this.possibleMovesList = [];
                     this.judge(this.board);
                     this.currentPlayer = GameModel.nextPlayer(this.currentPlayer);
                     this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
-                    
+
                 }
 
             } else {
@@ -198,7 +198,7 @@ var othelloMVC = (function othelloMVC(othello) {
             moveIndexes.forEach(index => {
                 moves.push(new Move(this, index, player));
             });
-                
+
             return moves;
         }
         shiftUp(u, l) {
@@ -373,13 +373,13 @@ var othelloMVC = (function othelloMVC(othello) {
             return positions;
         }
 
-        static createBoardWithMoveByPlayer(board,x, y, move) {
+        static createBoardWithMoveByPlayer(board, x, y, move) {
             let newBoard = board.cells.slice();
             newBoard[Board.index(y, x)] = move.player;
-            for(let i=0;i<move.arrVulnerables.length;i++) {
+            for (let i = 0; i < move.arrVulnerables.length; i++) {
                 newBoard[move.arrVulnerables[i]] = move.player;
             }
-            
+
             board.cells = newBoard.slice();
             board._bitBoard = new BitBoard();
             board._bitBoard.setTo(board.cells);
@@ -427,12 +427,12 @@ var othelloMVC = (function othelloMVC(othello) {
         listVulnerables() {
             let vulnerableCells = [];
 
-           
+
             let x = this.index & 0x07;
             let y = this.index >> 3;
             if (this.board.cells[Board.index(y, x)] !== 'empty')
                 return vulnerableCells;
-             
+
             let opponent = GameModel.nextPlayer(this.player);
             for (let dx = -1; dx <= 1; dx++) {
                 for (let dy = -1; dy <= 1; dy++) {

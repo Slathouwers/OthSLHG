@@ -25,9 +25,9 @@ var othelloMVC = (function othelloMVC(othello) {
             this.drawBoard();
             this.drawUi();
             //Event Listeners
-            this._uiView.addEventListener("click", 
-            e => this.onClick.notify(e),
-            false);
+            this._uiView.addEventListener("click",
+                e => this.onClick.notify(e),
+                false);
 
             this._model.onStartGame.attach(
                 () => this.refresh('Game Started')
@@ -43,7 +43,7 @@ var othelloMVC = (function othelloMVC(othello) {
             );
 
         }
-        refresh(message){
+        refresh(message) {
             this.clearCanvas(this.uiCtx);
             this.clearCanvas(this.brdCtx);
             this.drawBoard();
@@ -61,7 +61,7 @@ var othelloMVC = (function othelloMVC(othello) {
                 this.uiCtx.fill();
                 this.uiCtx.fillStyle = "red";
                 this.uiCtx.font = "20px Arial";
-                this.uiCtx.fillText(move.arrVulnerables.length,c * SIZE+SIZE/2.5, r * SIZE+SIZE/1.5);
+                this.uiCtx.fillText(move.arrVulnerables.length, c * SIZE + SIZE / 2.5, r * SIZE + SIZE / 1.5);
             });
         }
         drawBg() {
