@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
 import Board, {
     CELL_STATES
-} from "./board";
-import OthelloEvent from "../control/event";
-import Move from "./move";
+} from "./board.js";
+import OthelloEvent from "../control/event.js";
+import Move from "./move.js";
 
 export default class GameModel {
     constructor() {

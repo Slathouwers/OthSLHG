@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
-import Board from "./board";
-import GameModel from "./game";
+import Board from "./board.js";
+import GameModel from "./game.js";
 
 export default class Move {
     constructor(board, index, player) {

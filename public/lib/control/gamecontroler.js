@@ -1,8 +1,8 @@
 /* jshint esversion: 6 */
-import GameModel from "../model/game";
+import GameModel from "../model/game.js";
 import OthelloView, {
     SIZE
-} from "../view/view";
+} from "../view/view.js";
 
 export default class OthelloControler {
     /**

@@ -1,8 +1,8 @@
 /* jshint esversion: 6 */
 
-import GameModel from "./lib/model/game";
-import OthelloView from "./lib/view/view";
-import OthelloControler from "./lib/control/gamecontroler";
+import GameModel from "./lib/model/game.js";
+import OthelloView from "./lib/view/view.js";
+import OthelloControler from "./lib/control/gamecontroler.js";
 
 
 

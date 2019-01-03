@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
-import OthelloEvent from "../control/event";
+import OthelloEvent from "../control/event.js";
 import Board, {
     CELL_STATES
-} from "../model/board";
-import GameModel from "../model/game";
+} from "../model/board.js";
+import GameModel from "../model/game.js";
 
 export const SIZE = 50;
 export const BG_COLOR = "green";

@@ -2,7 +2,7 @@
 import Board, {
     DIMS,
     CELL_STATES
-} from "./board";
+} from "./board.js";
 
 export default class BitBoard {
     // split up in upper and lower board: JS 32bit constraint

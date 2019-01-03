@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
-import BitBoard from "./bitboard";
-import Move from "./move";
+import BitBoard from "./bitboard.js";
+import Move from "./move.js";
 
 export const CELL_STATES = {
     EMPTY: 'empty',
