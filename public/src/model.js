@@ -43,12 +43,8 @@ var othelloMVC = (function othelloMVC(othello) {
             if (this.possibleMovesList.length > 0) {
                 let chosenMoveListHasIndex = this.possibleMovesList.findIndex(e => e.index === Board.index(row, col));
                 if (chosenMoveListHasIndex > -1) {
-<<<<<<< HEAD
                     let choice = this.possibleMovesList[chosenMoveListHasIndex];
                     this.board = Board.createBoardWithMoveByPlayer(this.board, col, row, choice);
-=======
-                    this.board.updateWithMoveByPlayer(col, row, this.possibleMovesList[chosenMoveListHasIndex]);
->>>>>>> 0d8a8f41107ab49423c84ebed0abf4a7cfc5c31b
                     this.possibleMovesList=[];
                     this.judge(this.board);
                     this.currentPlayer = GameModel.nextPlayer(this.currentPlayer);
@@ -76,7 +72,6 @@ var othelloMVC = (function othelloMVC(othello) {
             n[CELL_STATES.WHITE] = 0;
             n[CELL_STATES.EMPTY] = 0;
             n.winner = '';
-<<<<<<< HEAD
             for (var i = 0; i < board.cells.length; i++)
                 n[board.cells[i]]++;
             if (n[CELL_STATES.BLACK] > n[CELL_STATES.WHITE]) {
@@ -85,16 +80,6 @@ var othelloMVC = (function othelloMVC(othello) {
             if (n[CELL_STATES.BLACK] < n[CELL_STATES.WHITE]) {
                 n.winner = CELL_STATES.WHITE;
             }
-=======
-            for (var i = 0; i < board.length; i++)
-                n[board.cells[i]]++;
-            if (n[CELL_STATES.BLACK] > n[CELL_STATES.WHITE]) {
-                n.winner = CELL_STATES.BLACK;
-            }
-            if (n[CELL_STATES.BLACK] < n[CELL_STATES.WHITE]) {
-                n.winner = CELL_STATES.WHITE;
-            }
->>>>>>> 0d8a8f41107ab49423c84ebed0abf4a7cfc5c31b
             n.winner = 'draw';
         }
         static nextPlayer(p) {
@@ -165,10 +150,7 @@ var othelloMVC = (function othelloMVC(othello) {
          * @param {*} player 
          */
         listPossibleMoves(player) {
-<<<<<<< HEAD
             this._logBitsToConsole();
-=======
->>>>>>> 0d8a8f41107ab49423c84ebed0abf4a7cfc5c31b
             let moveIndexes = [];
             let moves = [];
             let bb = this.toBitBoard();
@@ -212,15 +194,9 @@ var othelloMVC = (function othelloMVC(othello) {
             au |= at.upper;
             al |= at.lower;
 
-<<<<<<< HEAD
             moveIndexes = this.cellPositionsFromBitBoard(au, al);
             moveIndexes.forEach(index => {
                 moves.push(new Move(this, index, player));
-=======
-            moves = this.cellPositionsFromBitBoard(au, al).map(function (c){
-                let m = new Move(this , c, player);
-                return m;
->>>>>>> 0d8a8f41107ab49423c84ebed0abf4a7cfc5c31b
             });
                 
             return moves;
@@ -374,7 +350,6 @@ var othelloMVC = (function othelloMVC(othello) {
                 upper: eu & (this.shiftUp(tu, tl) << 1),
                 lower: el & (this.shiftUp(tl, 0) << 1)
             };
-<<<<<<< HEAD
         }
         cellPositionsFromBitBoard(au, al) {
             let positions = [];
@@ -410,40 +385,6 @@ var othelloMVC = (function othelloMVC(othello) {
             board._bitBoard.setTo(board.cells);
 
             return board;
-=======
-        }
-        cellPositionsFromBitBoard(au, al) {
-            let positions = [];
-
-            for (let yu = 0; yu < 4 && au; yu++) {
-                for (let xu = 0; xu < 8 && au; xu++) {
-                    if (au & 0x80000000)
-                        positions.push(Board.index(yu, xu));
-                    au <<= 1;
-                }
-            }
-
-            for (let yl = 4; yl < 8 && al; yl++) {
-                for (let xl = 0; xl < 8 && al; xl++) {
-                    if (al & 0x80000000)
-                        positions.push(Board.index(yl, xl));
-                    al <<= 1;
-                }
-            }
-
-            return positions;
-        }
-
-        updateWithMoveByPlayer(x, y, move) {
-            let newBoard = move.board.cells.slice();
-            newBoard[Board.index(y, x)] = move.player;
-            move.arrVulnerables.forEach(index => {
-                newBoard[index] = move.player;
-            });
-            this.cells = newBoard.slice();
-
-
->>>>>>> 0d8a8f41107ab49423c84ebed0abf4a7cfc5c31b
         }
 
     }
