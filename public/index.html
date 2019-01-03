@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Othello/Reversie</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
-        <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
-        <script src="src/event.js"></script>
-        <script src="src/model.js"></script>
-        <script src="src/view.js"></script>
-        <script src="src/controler.js"></script>
-    </head>
 
-    <body>
-        <div class="container">
-            <input type="email" id="txtEmail" placeholder="Email">
-            <input type="password"  id="txtPassword">
-            <input type="button" value="Log In" id="btnLogin" class="btn btn-action">
-            <input type="button" value="Sign Up" id="btnSignUp" class="btn btn-secondary">
-            <input type="button" value="Log Out" id="btnLogOut" class="btn btn-action hide">
-        </div>
-        <div id="stage">
-            <canvas id="ui-layer" width="400" height="400"></canvas>
-            <canvas id="game-layer" width="400" height="400"></canvas>
-            <canvas id="background-layer" width="400" height="400"></canvas>
-        </div>
-        <script src="./src/app.js"></script>
-    </body>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Othello/Reversie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <input type="email" id="txtEmail" placeholder="Email">
+        <input type="password" id="txtPassword">
+        <input type="button" value="Log In" id="btnLogin" class="btn btn-action">
+        <input type="button" value="Sign Up" id="btnSignUp" class="btn btn-secondary">
+        <input type="button" value="Log Out" id="btnLogOut" class="btn btn-action hide">
+    </div>
+    <div id="stage">
+        <canvas id="ui-layer" width="400" height="400"></canvas>
+        <canvas id="game-layer" width="400" height="400"></canvas>
+        <canvas id="background-layer" width="400" height="400"></canvas>
+    </div>
+    <script type="module" src="./src/app.js"></script>
+</body>
+
 </html>

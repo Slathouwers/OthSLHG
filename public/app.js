@@ -1,7 +1,10 @@
 /* jshint esversion: 6 */
 
-// @ts-ignore
-var othelloMVC = othelloMVC || {};
+import GameModel from "./lib/model/game";
+import OthelloView from "./lib/view/view";
+import OthelloControler from "./lib/control/gamecontroler";
+
+
 
 (function () {
   /// Initialize Firebase
@@ -13,6 +16,7 @@ var othelloMVC = othelloMVC || {};
     storageBucket: "othellomultimedia18-19.appspot.com",
     messagingSenderId: "984933187697"
   };
+  // @ts-ignore
   firebase.initializeApp(config);
   //Get auth elements
   const txtEmail = document.getElementById('txtEmail');
@@ -27,6 +31,7 @@ var othelloMVC = othelloMVC || {};
     const email = txtEmail.Value;
     // @ts-ignore
     const pass = txtPassword.Value;
+    // @ts-ignore
     const auth = firebase.auth();
     //Sign in
     const promise = auth.signInWithEmailAndPassword(email, pass);
@@ -39,12 +44,14 @@ var othelloMVC = othelloMVC || {};
     const email = txtEmail.Value;
     // @ts-ignore
     const pass = txtPassword.Value;
+    // @ts-ignore
     const auth = firebase.auth();
     //Sign in
     const promise = auth.createUserWithEmailAndPassword(email, pass);
     promise.catch(e => console.log(e.message));
   });
   //Add a realtime listener
+  // @ts-ignore
   firebase.auth().onAuthStateChanged(firebaseUser => {
     if (firebaseUser) {
       console.log(firebaseUser);
@@ -54,10 +61,13 @@ var othelloMVC = othelloMVC || {};
   });
 
   /// initialize othello
-  let gameModel = new othelloMVC.Game();
-  let boardCanvasSelector = document.getElementById("game-layer");
-  let uiCanvasSelector = document.getElementById("ui-layer");
-  let bgCanvasSelector = document.getElementById("background-layer");
-  let othView = new othelloMVC.View(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector);
-  let othControler = new othelloMVC.Controler(gameModel,othView);
+  //Model
+  const gameModel = new GameModel();
+  //View
+  const boardCanvasSelector = document.getElementById("game-layer");
+  const uiCanvasSelector = document.getElementById("ui-layer");
+  const bgCanvasSelector = document.getElementById("background-layer");
+  const othView = new OthelloView(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector);
+  //Controler
+  const othControler = new OthelloControler(gameModel, othView);
 }());
