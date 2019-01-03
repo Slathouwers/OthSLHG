@@ -18,7 +18,7 @@ var othelloMVC = (function othelloMVC(othello) {
             this.uiCtx = this._uiView.getContext('2d');
             this._bgView = bgCanvasSelector;
             this.bgCtx = this._bgView.getContext('2d');
-            
+            this.SIZE = SIZE;
             this.onClick = new othello.Event(this);
             // init
             this.drawBg();
@@ -30,21 +30,39 @@ var othelloMVC = (function othelloMVC(othello) {
             false);
 
             this._model.onStartGame.attach(
-                () => this.drawBoard()
+                () => this.refresh('Game Started')
             );
             this._model.onMakeMove.attach(
-                () => this.drawBoard()
+                () => this.refresh(`Your turn ${this._model.currentPlayer}:`)
             );
             this._model.onPassMove.attach(
-                () => this.drawBoard()
+                () => this.refresh(`Player couldn't make a move! Your turn ${this._model.currentPlayer}`)
             );
             this._model.onGameWon.attach(
-                () => this.drawBoard()
+                () => this.refresh(``)
             );
 
         }
-        drawUi() {
-            
+        refresh(message){
+            this.clearCanvas(this.uiCtx);
+            this.clearCanvas(this.brdCtx);
+            this.drawBoard();
+            this.drawUi(message);
+        }
+        drawUi(message) {
+            this._model.possibleMovesList.forEach(move => {
+                let c = move.index & 0x07;
+                let r = move.index >> 3;
+                this.uiCtx.beginPath();
+                this.uiCtx.fillStyle = "rgba(236, 195, 74, 0.38)";
+                this.uiCtx.strokeStyle = "black";
+                this.uiCtx.rect(c * SIZE, r * SIZE, SIZE, SIZE);
+                this.uiCtx.stroke();
+                this.uiCtx.fill();
+                this.uiCtx.fillStyle = "red";
+                this.uiCtx.font = "20px Arial";
+                this.uiCtx.fillText(move.arrVulnerables.length,c * SIZE+SIZE/2.5, r * SIZE+SIZE/1.5);
+            });
         }
         drawBg() {
             for (let i = 0; i < 8; i++) {
@@ -83,21 +101,6 @@ var othelloMVC = (function othelloMVC(othello) {
             ctx.clearRect(0, 0, 400, 400);
         }
         //Eventhandler
-        uiViewClickHandler(event) {
-            let x = event.pageX - this._uiView.getBoundingClientRect().left;
-            let y = event.pageY - this._uiView.getBoundingClientRect().top;
-            let row = Math.floor(y / SIZE);
-            let col = Math.floor(x / SIZE);
-
-            this._model.board.setCell(row, col, this._model.currentPlayer);
-            this._model.currentPlayer = this._model.nextPlayer();
-            //clear and redraw ui menu
-            this.clearCanvas(this.uiCtx);
-            this.drawUi();
-            //clear and redraw game objects
-            this.clearCanvas(this.brdCtx);
-            this.drawBoard();
-        }
     }
     //API
     othello.View = OthelloView;
