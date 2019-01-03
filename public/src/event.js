@@ -16,7 +16,10 @@ var othelloMVC = (function othelloMVC(othello) {
         }
         notify(args) { // loop through, calling attached listeners
             this._listeners.forEach(
-                (i) => this._listeners[i](this._sender, args)
+                (v,i) => {
+                    console.log('v:\n', v);
+                    console.log('i:\n', i);
+                    this._listeners[i](this._sender, args);}
             );
         }
     }

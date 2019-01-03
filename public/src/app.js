@@ -54,10 +54,10 @@ var othelloMVC = othelloMVC || {};
   });
 
   /// initialize othello
-  const gameModel = new othelloMVC.Game();
-  const boardCanvasSelector = document.getElementById("game-layer");
-  const uiCanvasSelector = document.getElementById("ui-layer");
-  const bgCanvasSelector = document.getElementById("background-layer");
-  const oth = new othelloMVC.View(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector);
-
+  let gameModel = new othelloMVC.Game();
+  let boardCanvasSelector = document.getElementById("game-layer");
+  let uiCanvasSelector = document.getElementById("ui-layer");
+  let bgCanvasSelector = document.getElementById("background-layer");
+  let othView = new othelloMVC.View(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector);
+  let othControler = new othelloMVC.Controler(gameModel,othView);
 }());

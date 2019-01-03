@@ -24,13 +24,14 @@ var othelloMVC = (function othelloMVC(othello) {
             this.onMakeMove = new othello.Event(this);
             this.onPassMove = new othello.Event(this);
             this.onGameWon = new othello.Event(this);
+            this.startGame();
         }
 
         startGame() {
             //Initialize
             this.playerList = ['black', 'white'];
             this.currentPlayer = 'black';
-            this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
+            //this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
             //Notify
             this.onStartGame.notify();
         }

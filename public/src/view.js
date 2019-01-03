@@ -18,12 +18,16 @@ var othelloMVC = (function othelloMVC(othello) {
             this.uiCtx = this._uiView.getContext('2d');
             this._bgView = bgCanvasSelector;
             this.bgCtx = this._bgView.getContext('2d');
+            
+            this.onClick = new othello.Event(this);
             // init
             this.drawBg();
             this.drawBoard();
             this.drawUi();
             //Event Listeners
-            this._uiView.addEventListener("click", this.uiClick, false);
+            this._uiView.addEventListener("click", 
+            e => this.onClick.notify(e),
+            false);
 
             this._model.onStartGame.attach(
                 () => this.drawBoard()
@@ -62,7 +66,7 @@ var othelloMVC = (function othelloMVC(othello) {
             let dims = 8;
             for (let row = 0; row < dims; row++) {
                 for (let col = 0; col < dims; col++) {
-                    let position = board[othello.Board.index(row, col)];
+                    let position = board.cells[othello.Board.index(row, col)];
                     if (position != 'empty') {
                         this.drawCell(row, col, position);
                     }
@@ -72,21 +76,21 @@ var othelloMVC = (function othelloMVC(othello) {
         drawCell(row, col, state) {
             this.brdCtx.beginPath();
             this.brdCtx.fillStyle = state;
-            this.brdCtx.arc(row * SIZE + SIZE / 2, col * SIZE + SIZE / 2, 20, 0, Math.PI * 2);
+            this.brdCtx.arc(col * SIZE + SIZE / 2, row * SIZE + SIZE / 2, 20, 0, Math.PI * 2);
             this.brdCtx.fill();
         }
         clearCanvas(ctx) {
             ctx.clearRect(0, 0, 400, 400);
         }
         //Eventhandler
-        uiClick(event) {
+        uiViewClickHandler(event) {
             let x = event.pageX - this._uiView.getBoundingClientRect().left;
             let y = event.pageY - this._uiView.getBoundingClientRect().top;
             let row = Math.floor(y / SIZE);
             let col = Math.floor(x / SIZE);
 
             this._model.board.setCell(row, col, this._model.currentPlayer);
-            this._model.nextPlayer();
+            this._model.currentPlayer = this._model.nextPlayer();
             //clear and redraw ui menu
             this.clearCanvas(this.uiCtx);
             this.drawUi();
