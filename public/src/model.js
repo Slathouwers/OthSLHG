@@ -14,9 +14,11 @@ var othelloMVC = (function othelloMVC(othello) {
 
     class GameModel {
         constructor() {
+            /** @type {any[] | string[]} */
             this.playerList = [];
             this.currentPlayer = '';
             this.board = new Board();
+            /** @type {any[]} */
             this.possibleMovesList = [];
             this.passCounter = 0;
             this.hasWinner = false;
@@ -36,6 +38,9 @@ var othelloMVC = (function othelloMVC(othello) {
             this.startGameEvent.notify();
         }
 
+        /**
+         * @param {any} move
+         */
         makeMove(move) {
             if (this.possibleMovesList.length) {
                 this.board.updateWithMoveByPlayer(move, this.currentPlayer);
@@ -71,6 +76,10 @@ var othelloMVC = (function othelloMVC(othello) {
             this._bitBoard = new BitBoard();
         }
         // Static boardcell index calculation: cell-index = row + col * DIMS
+        /**
+         * @param {number} r
+         * @param {number} c
+         */
         static index(r, c) {
             return (c + r * DIMS);
         }
@@ -82,7 +91,11 @@ var othelloMVC = (function othelloMVC(othello) {
                 let string = (b >>> 0).toString(2);
                 let bit32 = '0'.repeat(32 - string.length).concat(string);
                 for (let index = 0; index < 4; index++) {
-                    console.log(bit32.substr(index * 8, 8));
+                    let subs = bit32.substr(index * 8, 8);
+                    subs = subs.replace("0", " 0 ");
+                    subs = subs.replace("1", ' B ');
+
+                    console.log(subs);
                 }
             });
         }
@@ -111,18 +124,30 @@ var othelloMVC = (function othelloMVC(othello) {
         //     return this._bitBoard;
         // }
 
+        /**
+         * @param {number} row
+         * @param {number} col
+         * @param {string} state
+         */
         setCell(row, col, state) {
             if (state == CELL_STATES.BLACK || CELL_STATES.WHITE) {
                 this.cells[Board.index(row, col)] = state;
             }
         }
 
+        /**
+         * @param {any} player
+         */
         listPossibleMoves(player) {
             let moves = [];
             //TODO: generate moves for player color
             return moves || [];
         }
 
+        /**
+         * @param {any} move
+         * @param {any} currentPlayer
+         */
         updateWithMoveByPlayer(move, currentPlayer) {
             //TODO: place piece of player color on board and flip all vulnerable cells
             throw new Error("Method not implemented.");
@@ -134,6 +159,12 @@ var othelloMVC = (function othelloMVC(othello) {
         }
     }
 
+    class Move{
+        constructor(){
+            this.index='';
+            this.listOfVulnerables='';
+        }
+    }
     class BitBoard {
         // split up in upper and lower board: JS 32bit constraint
         // split in White positions and Black positions -> move generation by cardinal and ordinal shifting bitboards 
@@ -144,6 +175,9 @@ var othelloMVC = (function othelloMVC(othello) {
             this.whiteLower = 0;
         }
 
+        /**
+         * @param {string[]} cellsArr
+         */
         setTo(cellsArr) {
             let lastUpperRow = (DIMS >> 1) - 1;
             let lastLowerRow = DIMS - 1;
@@ -164,10 +198,15 @@ var othelloMVC = (function othelloMVC(othello) {
         }
     }
 
+    othello.Game = GameModel;
+    othello.Board = Board;
+    othello.BitBoard=BitBoard;
+    othello.Move = Move;
     //TODO: API public memberlist
 
     let b = new Board();
     b._logBitsToConsole();
+    
 
 
     return othello;
