@@ -5,8 +5,6 @@ import fbapp from "./lib/firbasehost.js";
 
 (function () {
   fbapp();
-
   /// initialize othello
   const othControler = new OthelloControler();
-
 }());

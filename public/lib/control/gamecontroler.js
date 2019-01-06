@@ -47,6 +47,7 @@ export default class OthelloControler {
     // @ts-ignore
     setUpPlayerTurn(sender, event) {
         let view = this._view;
+        let delay = document.getElementById("aiDelay").value;
         let sleep = (milliseconds) => {
             return new Promise(resolve => setTimeout(resolve, milliseconds));
         };
@@ -69,7 +70,7 @@ export default class OthelloControler {
             view.refresh(`${sender.currentPlayer.color.toUpperCase()} thinking...`);
 
             //Simulate thinking
-            sleep(1000).then(() => {
+            sleep(delay).then(() => {
                 // make move when awake
                 sender.makeMove(boardMoveIndex >> 3, boardMoveIndex & 0x07);
                 view.refresh(`${sender.currentPlayer.color.toUpperCase()} move made!`);
@@ -91,7 +92,7 @@ export default class OthelloControler {
 
             view.refresh(`${sender.currentPlayer.color.toUpperCase()} thinking...`);
             //Simulate thinking
-            sleep(1000).then(() => {
+            sleep(delay).then(() => {
                 sender.makeMove(moveByAI.index >> 3, moveByAI.index & 0x07);
                 view.refresh(`${sender.currentPlayer.color.toUpperCase()} move made!`);
             });
