@@ -58,7 +58,7 @@ export default class OthelloControler {
             view.refresh(`${sender.currentPlayer.color.toUpperCase()} thinking...`);
 
             let sleep = (milliseconds) => {
-                return new Promise(resolve => setTimeout(resolve, milliseconds))
+                return new Promise(resolve => setTimeout(resolve, milliseconds));
             };
             sleep(500).then(() => {
                 sender.makeMove(boardMoveIndex >> 3, boardMoveIndex & 0x07);
@@ -67,7 +67,7 @@ export default class OthelloControler {
         } else if (sender.currentPlayer.type == "Simple AI") {
 
             let sleep = (milliseconds) => {
-                return new Promise(resolve => setTimeout(resolve, milliseconds))
+                return new Promise(resolve => setTimeout(resolve, milliseconds));
             };
             //Computer AI view update
             let max = sender.possibleMovesList.length;

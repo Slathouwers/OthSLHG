@@ -38,20 +38,14 @@ export default class OthelloView {
 
         //Event Listeners
         this.btnStart.addEventListener("click",
-            e => {
-                // @ts-ignore
-                return this.onStartClick.notify(e);
-            },
+            e => this.onStartClick.notify(e), 
             false);
         this._uiView.addEventListener("click",
-            e => {
-                // @ts-ignore
-                return this.onUiClick.notify(e);
-            },
+            e => this.onUiClick.notify(e),
             false);
         this._model.onStartGame.attach(
             () => this.refresh('Game Started. Your move BLACK')
-        );
+            );
         this._model.onPassMove.attach(
             () => this.refresh(`Player couldn't make a move! Your turn ${this._model.currentPlayer.color.toUpperCase()}`)
         );
@@ -82,12 +76,14 @@ export default class OthelloView {
                 this.uiCtx.fillText(move.arrVulnerables.length.toString(), c * SIZE + SIZE / 2.5, r * SIZE + SIZE / 1.5);
             });
         }
-        this.uiCtx.fillStyle = "black";
+        this.uiCtx.fillStyle = "rgb(179, 67, 67)";
         this.uiCtx.font = "20px Arial";
-        this.uiCtx.fillText(message, 50, 430);
+        this.uiCtx.fontWeight="900";
+        this.uiCtx.fillText("HINT: \""+message+"\"", 50, 430);
         let bCount = this._model.playerList[0].pieceCount;
         let wCount = this._model.playerList[1].pieceCount;
-        this.uiCtx.fillText(`B:${bCount}        /       W:${wCount}            ${this._model.winner}`, 5, 470);
+        this.uiCtx.fillText(`# Black ${bCount}        /       # White ${wCount}`, 50, 450);
+        this.uiCtx.fillText(`${this._model.winner}`,50, 480);
     }
     drawBg() {
         for (let i = 0; i < 8; i++) {

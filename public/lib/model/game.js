@@ -22,8 +22,8 @@ export default class GameModel {
                 'type': undefined
             }
         ];
-        this.roundCounter = 0;
         this.currentPlayer = '';
+        /** @type {Move[]} */
         this.possibleMovesList = [];
         this.hasStarted = false;
         this.winner = '';
