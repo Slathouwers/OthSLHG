@@ -6,19 +6,21 @@ import OthelloEvent from "../control/event.js";
 import Move from "./move.js";
 
 export default class GameModel {
-    constructor() {
+    constructor(blackPlayerType,whitePlayerType) {
         // create new board -> EMPTY
         this.board = new Board();
         // create playerlist to keep track of player stats like score and passing moves
         this.playerList = [{
                 'color': 'black',
                 'passCounter': 0,
-                'pieceCount': 0
+                'pieceCount': 0,
+                'type' : blackPlayerType
             },
             {
                 'color': 'white',
                 'passCounter': 0,
-                'pieceCount': 0
+                'pieceCount': 0,
+                'type' : whitePlayerType
             }
         ];
         this.roundCounter = 0;

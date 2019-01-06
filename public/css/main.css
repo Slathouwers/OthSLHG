@@ -5,6 +5,7 @@ body {
     margin: auto;
     width: 400px;
     height: 400px;
+    margin-top: 4px;
     position: relative;
     border: 2px solid black;
     top: 0;
@@ -20,7 +21,8 @@ canvas {
     margin: auto;
     background-color: lightgray;
     width: 400px;
-    border: 2px solid red;
+    border: 2px solid rgb(179, 67, 67);
+    margin-top: 16px;
     top: 0;
     right:0;
     bottom: 0;
@@ -41,3 +43,22 @@ canvas {
 #background-layer {
     z-index: 1;
 }
+#container{
+    margin: auto;
+    width: 250px;
+}
+input[type=email],input[type=password] {
+    width: 100%;
+    padding: 8px 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+input[type=button], input[type=submit], input[type=reset] {
+    background-color: rgb(179, 67, 67);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    margin: 8px 2px;
+    cursor: pointer;
+  }
