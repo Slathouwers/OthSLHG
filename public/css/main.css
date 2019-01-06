@@ -3,7 +3,7 @@
     font: 12px Arial;
 }
 body {
-    background-color: lightsteelblue;
+    background-color: rgb(204, 215, 218);
 }
 #stage {
     margin: auto;
@@ -23,9 +23,11 @@ canvas {
 }
 #menu{
     margin: 0 auto;
+    display: block;
     width: 400px;
     border: 1px solid rgb(179, 67, 67);
     margin-top: 16px;
+
     top: 0;
     right:0;
     bottom: 0;
@@ -57,10 +59,11 @@ label {
     /* To make sure that all labels have the same size and are properly aligned */
     background-color: rgb(199, 180, 180);
     display: block;
-    width: 100%;
     margin:0 auto;
     padding: 8px 16px;
+    width: 100%;
   }
+
 input[type=email],input[type=password] {
     width: 100%;
     padding: 8px 10px;

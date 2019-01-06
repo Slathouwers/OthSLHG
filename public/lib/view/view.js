@@ -1,8 +1,6 @@
 /* jshint esversion: 6 */
 import OthelloEvent from "../control/event.js";
-import Board, {
-    CELL_STATES
-} from "../model/board.js";
+import Board from "../model/board.js";
 import GameModel from "../model/game.js";
 export const SIZE = 50;
 export const BG_COLOR = "green";
@@ -10,28 +8,30 @@ export const BDR_COLOR = "black";
 export default class OthelloView {
     /**
      * @param {GameModel} gameModel
-     * @param {Document} dom
      */
-    constructor(gameModel, dom) {
+    constructor(gameModel) {
         //Properties
         this._model = gameModel;
 
         //HTML DOM object binding
-        this._boardView = dom.getElementById("game-layer");
+        this._boardView = document.getElementById("game-layer");
+        // @ts-ignore
         this.brdCtx = this._boardView.getContext('2d');
-        this._uiView = dom.getElementById("ui-layer");
+        this._uiView = document.getElementById("ui-layer");
+        // @ts-ignore
         this.uiCtx = this._uiView.getContext('2d');
-        this._bgView = dom.getElementById("background-layer");
+        this._bgView = document.getElementById("background-layer");
+        // @ts-ignore
         this.bgCtx = this._bgView.getContext('2d');
-
         //game menu items
-        this.slctBlack = dom.getElementById("slctBlackType");
-        this.slctWhite = dom.getElementById("slctWhiteType");
-        this.btnStart = dom.getElementById("btnStart");
+        this.slctBlack = document.getElementById("slctBlackType");
+        this.slctWhite = document.getElementById("slctWhiteType");
+        this.btnStart = document.getElementById("btnStart");
 
         //Events
         this.onStartClick = new OthelloEvent(this);
         this.onUiClick = new OthelloEvent(this);
+
         // init
         this.drawBg();
         this.drawUi('Choose your settings...');
@@ -126,5 +126,4 @@ export default class OthelloView {
     clearCanvas(ctx) {
         ctx.clearRect(0, 0, 500, 500);
     }
-    //Eventhandler
 }

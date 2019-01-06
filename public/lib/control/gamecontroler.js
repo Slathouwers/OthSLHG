@@ -3,11 +3,12 @@ import GameModel from "../model/game.js";
 import OthelloView, {
     SIZE
 } from "../view/view.js";
+// @ts-ignore
 import OthelloEvent from "./event.js";
 export default class OthelloControler {
-    constructor(dom) {
+    constructor() {
         this._model = new GameModel();
-        this._view = new OthelloView(this._model, dom);
+        this._view = new OthelloView(this._model);
 
 
         //Event Listeners
@@ -38,44 +39,49 @@ export default class OthelloControler {
      * @param {OthelloView} sender
      * @param {MouseEvent} event
      */
+    // @ts-ignore
     startNewGame(sender, event) {
+        // @ts-ignore
         this._model.startGame(sender.slctBlack.value, sender.slctWhite.value);
     }
+    // @ts-ignore
     setUpPlayerTurn(sender, event) {
         let view = this._view;
-
+        let sleep = (milliseconds) => {
+            return new Promise(resolve => setTimeout(resolve, milliseconds));
+        };
+        
         if (sender.currentPlayer.type == "Human") { //human UI refresh
+            //Human Case
             view.refresh(`Your turn ${sender.currentPlayer.color.toUpperCase()}...`);
         } else if (sender.currentPlayer.type == "Random AI") {
             //Computer AI view update
             let min = 0;
             let max = sender.possibleMovesList.length;
             let boardMoveIndex = 0;
-            if (max > 0) {
+
+            if (max > 0) {// index out of bounds error if < 0 and undefined if 0
                 let randomMovesIndex = Math.floor(Math.random() * (max - min)) + min;
                 boardMoveIndex = sender.possibleMovesList[randomMovesIndex].index;
             }
+            
+            //Refresh Human AI
             view.refresh(`${sender.currentPlayer.color.toUpperCase()} thinking...`);
 
-            let sleep = (milliseconds) => {
-                return new Promise(resolve => setTimeout(resolve, milliseconds));
-            };
-            sleep(500).then(() => {
+            //Simulate thinking
+            sleep(1000).then(() => {
+                // make move when awake
                 sender.makeMove(boardMoveIndex >> 3, boardMoveIndex & 0x07);
-                this._view.refresh(`${sender.currentPlayer.color.toUpperCase()} move made!`);
+                view.refresh(`${sender.currentPlayer.color.toUpperCase()} move made!`);
             });
         } else if (sender.currentPlayer.type == "Simple AI") {
-
-            let sleep = (milliseconds) => {
-                return new Promise(resolve => setTimeout(resolve, milliseconds));
-            };
-            //Computer AI view update
+            //Simple AI Case => place maximize casualties for next move
             let max = sender.possibleMovesList.length;
             let moveByAI = {
                 'index': 0,
                 'arrVulnerables': []
             };
-
+            //find move with biggest number of vulnerables
             if (max > 0) {
                 sender.possibleMovesList.forEach(
                     m => {
@@ -84,10 +90,10 @@ export default class OthelloControler {
             }
 
             view.refresh(`${sender.currentPlayer.color.toUpperCase()} thinking...`);
-
-            sleep(500).then(() => {
+            //Simulate thinking
+            sleep(1000).then(() => {
                 sender.makeMove(moveByAI.index >> 3, moveByAI.index & 0x07);
-                this._view.refresh(`${sender.currentPlayer.color.toUpperCase()} move made!`);
+                view.refresh(`${sender.currentPlayer.color.toUpperCase()} move made!`);
             });
         }
 
