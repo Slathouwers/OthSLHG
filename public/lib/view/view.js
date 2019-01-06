@@ -4,51 +4,59 @@ import Board, {
     CELL_STATES
 } from "../model/board.js";
 import GameModel from "../model/game.js";
-
 export const SIZE = 50;
 export const BG_COLOR = "green";
 export const BDR_COLOR = "black";
 export default class OthelloView {
     /**
      * @param {GameModel} gameModel
-     * @param {HTMLCanvasElement} boardCanvasSelector
-     * @param {HTMLCanvasElement} uiCanvasSelector
-     * @param {HTMLCanvasElement} bgCanvasSelector
+     * @param {Document} dom
      */
-    constructor(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector) {
+    constructor(gameModel, dom) {
         //Properties
         this._model = gameModel;
-        this._boardView = boardCanvasSelector;
+
+        //HTML DOM object binding
+        this._boardView = dom.getElementById("game-layer");
         this.brdCtx = this._boardView.getContext('2d');
-        this._uiView = uiCanvasSelector;
+        this._uiView = dom.getElementById("ui-layer");
         this.uiCtx = this._uiView.getContext('2d');
-        this._bgView = bgCanvasSelector;
+        this._bgView =dom.getElementById("background-layer");
         this.bgCtx = this._bgView.getContext('2d');
-        this.onClick = new OthelloEvent(this);
+        this.btnStart=dom.getElementById("btnStart");
+
+        //Events
+        this.onStartClick= new OthelloEvent(this);
+        this.onUiClick = new OthelloEvent(this);
         // init
         this.drawBg();
-        this.drawBoard();
-        this.drawUi();
+        this.refresh('Choose your settings...');
+
         //Event Listeners
+        this.btnStart.addEventListener("click",
+            e => {
+                // @ts-ignore
+                return this.onStartClick.notify(e);
+            },
+            false);
         this._uiView.addEventListener("click",
             e => {
                 // @ts-ignore
-                return this.onClick.notify(e);
+                return this.onUiClick.notify(e);
             },
             false);
         this._model.onStartGame.attach(
-            () => this.refresh('Game Started')
+            () => this.refresh('Game Started. Your move BLACK')
         );
         this._model.onMakeMove.attach(
-            () => this.refresh(`Your turn ${this._model.currentPlayer}:`)
+            () => this.refresh(`Your turn ${this._model.currentPlayer.color.toUpperCase()}`)
         );
         this._model.onPassMove.attach(
-            () => this.refresh(`Player couldn't make a move! Your turn ${this._model.currentPlayer}`)
+            () => this.refresh(`Player couldn't make a move! Your turn ${this._model.currentPlayer.color.toUpperCase()}`)
         );
         this._model.onGameWon.attach(
             () => this.refresh(``)
         );
-
     }
     refresh(message) {
         this.clearCanvas(this.uiCtx);
@@ -69,6 +77,13 @@ export default class OthelloView {
             this.uiCtx.fillStyle = "red";
             this.uiCtx.font = "20px Arial";
             this.uiCtx.fillText(move.arrVulnerables.length.toString(), c * SIZE + SIZE / 2.5, r * SIZE + SIZE / 1.5);
+            this.uiCtx.fillStyle ="black";
+            this.uiCtx.font = "20px Arial";
+            this.uiCtx.fillText(message,50,430);
+            let bCount = this._model.playerList[0].pieceCount;
+            let wCount = this._model.playerList[1].pieceCount; 
+            this.uiCtx.fillText(`B:${bCount}        /       W:${wCount}            ${this._model.winner}`,5,470);
+            
         });
     }
     drawBg() {
@@ -91,9 +106,9 @@ export default class OthelloView {
         let dims = 8;
         for (let row = 0; row < dims; row++) {
             for (let col = 0; col < dims; col++) {
-                let position = board.cells[Board.index(row, col)];
-                if (position != 'empty') {
-                    this.drawCell(row, col, position);
+                let occupation = board.cells[Board.index(row, col)];
+                if (occupation != 'empty') {
+                    this.drawCell(row, col, occupation);
                 }
             }
         }
@@ -110,7 +125,7 @@ export default class OthelloView {
         this.brdCtx.fill();
     }
     clearCanvas(ctx) {
-        ctx.clearRect(0, 0, 400, 400);
+        ctx.clearRect(0, 0, 500, 500);
     }
     //Eventhandler
 }

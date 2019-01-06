@@ -34,4 +34,26 @@ export default class BitBoard {
             }
         }
     }
+    log() {
+        let black = [this.blackUpper, this.blackLower];
+        let white = [this.whiteUpper, this.whiteLower];
+        console.log('black');
+        black.forEach(b => {
+            let string = (b >>> 0).toString(2);
+            let bit32 = '0'.repeat(32 - string.length).concat(string);
+            for (let index = 0; index < 4; index++) {
+                let subs = bit32.substr(index * 8, 8);
+                console.log(subs);
+            }
+        });
+        console.log('white');
+        white.forEach(b => {
+            let string = (b >>> 0).toString(2);
+            let bit32 = '0'.repeat(32 - string.length).concat(string);
+            for (let index = 0; index < 4; index++) {
+                let subs = bit32.substr(index * 8, 8);
+                console.log(subs);
+            }
+        });
+    }
 }

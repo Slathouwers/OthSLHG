@@ -7,31 +7,39 @@ import Move from "./move.js";
 
 export default class GameModel {
     constructor() {
-        /** @type {any[] | string[]} */
-        this.playerList = [];
-        this.currentPlayer = '';
+        // create new board -> EMPTY
         this.board = new Board();
-        /** @type {Move[]} */
+        // create playerlist to keep track of player stats like score and passing moves
+        this.playerList = [{
+                'color': 'black',
+                'passCounter': 0,
+                'pieceCount': 0
+            },
+            {
+                'color': 'white',
+                'passCounter': 0,
+                'pieceCount': 0
+            }
+        ];
+        this.roundCounter = 0;
+        this.currentPlayer = '';
         this.possibleMovesList = [];
-        this.passCounter = 0;
-        this.hasWinner = false;
-        this.scores = {};
+        this.hasStarted=false;
+        this.winner='';
 
         //Events
         this.onStartGame = new OthelloEvent(this);
         this.onMakeMove = new OthelloEvent(this);
         this.onPassMove = new OthelloEvent(this);
         this.onGameWon = new OthelloEvent(this);
-        this.startGame();
     }
     startGame() {
         //Initialize
         this.board._setInitialPieces();
-        this.playerList = ['black', 'white'];
-        this.currentPlayer = 'black';
-        this.judge(this.board);
+        this.currentPlayer = this.playerList[0];
         this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
-        //Notify
+        this.hasStarted=true;
+        this.judge();
         this.onStartGame.notify();
     }
     /**
@@ -39,43 +47,39 @@ export default class GameModel {
      * @param {number} col
      */
     makeMove(row, col) {
-        if (this.possibleMovesList.length > 0) {
-            let chosenMoveListHasIndex = this.possibleMovesList.findIndex(e => e.index === Board.index(row, col));
-            if (chosenMoveListHasIndex > -1) {
-                let choice = this.possibleMovesList[chosenMoveListHasIndex];
-                this.board = Board.createBoardWithMoveByPlayer(this.board, col, row, choice);
-                this.possibleMovesList = [];
-                this.judge(this.board);
-                this.currentPlayer = GameModel.nextPlayer(this.currentPlayer);
-                this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
-
+        if(this.hasStarted){
+            if (this.possibleMovesList.length > 0) {
+                let chosenMoveListIndex = this.possibleMovesList.findIndex(e => e.index === Board.index(row, col));
+                if (chosenMoveListIndex > -1) { //Move is in possibleMovesList <=> Valid move
+                    let choice = this.possibleMovesList[chosenMoveListIndex];
+                    this.board = Board.createBoardWithMoveByPlayer(this.board, col, row, choice);
+                    this.currentPlayer.passCounter = 0;
+                    this.switchPlayer();
+                }
+            } else if (this.possibleMovesList.length <= 0){
+                this.currentPlayer.passCounter++;
+                this.switchPlayer();
+    
             }
-
-        } else {
-            this.passCounter++;
-            this.currentPlayer = GameModel.nextPlayer(this.currentPlayer);
-            this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
-            this.judge(this.board);
+            this.judge();
+            this.onMakeMove.notify();
         }
-        this.onMakeMove.notify();
-        // this.hasWinner = this.board.judge();
-        // if (this.hasWinner) {
-        //     this.onGameWon.notify();
-        // } else {
-        //     this.onMakeMove.notify();
-        // }
     }
-    /**
-     * @param {{ cells: (string | number)[]; }} board
-     */
-    judge(board) {
+    switchPlayer() {
+        this.currentPlayer = this.nextPlayer(this.currentPlayer);
+        this.possibleMovesList = [];
+        this.possibleMovesList = this.board.listPossibleMoves(this.currentPlayer);
+    }
+    judge() {
         let n = {};
         n[CELL_STATES.BLACK] = 0;
         n[CELL_STATES.WHITE] = 0;
         n[CELL_STATES.EMPTY] = 0;
         n.winner = '';
-        for (var i = 0; i < board.cells.length; i++)
-            n[board.cells[i]]++;
+        for (var i = 0; i < this.board.cells.length; i++)
+            n[this.board.cells[i]]++;
+        this.playerList[0].pieceCount=n.black;
+        this.playerList[1].pieceCount=n.white;        
         if (n[CELL_STATES.BLACK] > n[CELL_STATES.WHITE]) {
             n.winner = CELL_STATES.BLACK;
         }
@@ -83,11 +87,12 @@ export default class GameModel {
             n.winner = CELL_STATES.WHITE;
         }
         n.winner = 'draw';
+        return n;
     }
     /**
-     * @param {string} p
+     * @param {{ color: string; }} p
      */
-    static nextPlayer(p) { //--> controller logic - Needs to move
-        return p === 'black' ? 'white' : 'black';
+    nextPlayer(p) { //--> controller logic - Needs to move
+        return p.color === 'black' ? this.playerList[1] : this.playerList[0];
     }
 }

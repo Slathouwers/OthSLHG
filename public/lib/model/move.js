@@ -18,7 +18,7 @@ export default class Move {
         if (this.board.cells[Board.index(y, x)] !== 'empty')
             return vulnerableCells;
 
-        let opponent = GameModel.nextPlayer(this.player);
+        let opponent = this.player.color==='black'?'white':'black';
         for (let dx = -1; dx <= 1; dx++) {
             for (let dy = -1; dy <= 1; dy++) {
                 if (dx === 0 && dy === 0)
@@ -29,7 +29,7 @@ export default class Move {
                     if (nx < 0 || 8 <= nx || ny < 0 || 8 <= ny)
                         break;
                     let cell = this.board.cells[Board.index(ny, nx)];
-                    if (cell === this.player && 2 <= i) {
+                    if (cell === this.player.color && 2 <= i) {
                         for (let j = 1; j < i; j++)
                             vulnerableCells.push(Board.index(y + j * dy, x + j * dx));
                         break;

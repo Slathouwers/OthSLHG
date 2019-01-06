@@ -1,7 +1,6 @@
 body {
     background-color: lightsteelblue;
 }
-
 #stage {
     margin: auto;
     width: 400px;
@@ -12,14 +11,25 @@ body {
     right:0;
     bottom: 0;
     left: 0;
-    
 }
-
 canvas {
     position: absolute;
 
 }
-
+#menu{
+    margin: auto;
+    background-color: lightgray;
+    width: 400px;
+    border: 2px solid red;
+    top: 0;
+    right:0;
+    bottom: 0;
+    left: 0;
+}
+#btnStart{
+    margin:auto;
+    width: 100%;
+}
 #ui-layer {
     z-index: 3;
 }

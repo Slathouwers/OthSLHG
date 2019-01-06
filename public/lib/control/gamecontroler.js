@@ -3,23 +3,26 @@ import GameModel from "../model/game.js";
 import OthelloView, {
     SIZE
 } from "../view/view.js";
-
 export default class OthelloControler {
-    /**
-     * @param {GameModel} model
-     * @param {OthelloView} view
-     */
-    constructor(model, view) {
-        this._model = model;
-        this._view = view;
-        this._view.onClick.attach(
+    constructor(dom) {
+        this._model = new GameModel();
+        this._view = new OthelloView(this._model, dom);
+
+        //Event Listeners
+        this._view.onStartClick.attach(
+            /**
+             * @param {any} sender
+             * @param {any} event
+             */
+            (sender, event) => this.startNewGame(sender, event)
+        );
+        this._view.onUiClick.attach(
             /**
              * @param {any} sender
              * @param {any} event
              */
             (sender, event) => this.uiClick(sender, event)
         );
-
     }
     /**
      * @param {OthelloView} sender
@@ -30,7 +33,13 @@ export default class OthelloControler {
         let y = event.pageY - sender._uiView.getBoundingClientRect().top;
         let row = Math.floor(y / SIZE);
         let col = Math.floor(x / SIZE);
-
         this._model.makeMove(row, col);
+    }
+    /**
+     * @param {OthelloView} sender
+     * @param {MouseEvent} event
+     */
+    startNewGame(sender, event) {
+        this._model.startGame();
     }
 }

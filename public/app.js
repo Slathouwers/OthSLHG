@@ -1,7 +1,4 @@
 /* jshint esversion: 6 */
-
-import GameModel from "./lib/model/game.js";
-import OthelloView from "./lib/view/view.js";
 import OthelloControler from "./lib/control/gamecontroler.js";
 
 
@@ -61,13 +58,6 @@ import OthelloControler from "./lib/control/gamecontroler.js";
   });
 
   /// initialize othello
-  //Model
-  const gameModel = new GameModel();
-  //View
-  const boardCanvasSelector = document.getElementById("game-layer");
-  const uiCanvasSelector = document.getElementById("ui-layer");
-  const bgCanvasSelector = document.getElementById("background-layer");
-  const othView = new OthelloView(gameModel, boardCanvasSelector, uiCanvasSelector, bgCanvasSelector);
-  //Controler
-  const othControler = new OthelloControler(gameModel, othView);
+  const othControler = new OthelloControler(document);
+
 }());
