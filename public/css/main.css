@@ -1,10 +1,14 @@
+*{
+    box-sizing: border-box;
+    font: 12px Arial;
+}
 body {
     background-color: lightsteelblue;
 }
 #stage {
     margin: auto;
-    width: 400px;
-    height: 400px;
+    width: 404px;
+    height: 404px;
     margin-top: 4px;
     position: relative;
     border: 2px solid black;
@@ -18,10 +22,9 @@ canvas {
 
 }
 #menu{
-    margin: auto;
-    background-color: lightgray;
+    margin: 0 auto;
     width: 400px;
-    border: 2px solid rgb(179, 67, 67);
+    border: 1px solid rgb(179, 67, 67);
     margin-top: 16px;
     top: 0;
     right:0;
@@ -47,6 +50,17 @@ canvas {
     margin: auto;
     width: 250px;
 }
+input+input{
+    margin-top: 1em;
+}
+label {
+    /* To make sure that all labels have the same size and are properly aligned */
+    background-color: rgb(199, 180, 180);
+    display: block;
+    width: 100%;
+    margin:0 auto;
+    padding: 8px 16px;
+  }
 input[type=email],input[type=password] {
     width: 100%;
     padding: 8px 10px;

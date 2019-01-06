@@ -21,16 +21,20 @@ export default class OthelloView {
         this.brdCtx = this._boardView.getContext('2d');
         this._uiView = dom.getElementById("ui-layer");
         this.uiCtx = this._uiView.getContext('2d');
-        this._bgView =dom.getElementById("background-layer");
+        this._bgView = dom.getElementById("background-layer");
         this.bgCtx = this._bgView.getContext('2d');
-        this.btnStart=dom.getElementById("btnStart");
+
+        //game menu items
+        this.slctBlack = dom.getElementById("slctBlackType");
+        this.slctWhite = dom.getElementById("slctWhiteType");
+        this.btnStart = dom.getElementById("btnStart");
 
         //Events
-        this.onStartClick= new OthelloEvent(this);
+        this.onStartClick = new OthelloEvent(this);
         this.onUiClick = new OthelloEvent(this);
         // init
         this.drawBg();
-        this.refresh('Choose your settings...');
+        this.drawUi('Choose your settings...');
 
         //Event Listeners
         this.btnStart.addEventListener("click",
@@ -48,14 +52,11 @@ export default class OthelloView {
         this._model.onStartGame.attach(
             () => this.refresh('Game Started. Your move BLACK')
         );
-        this._model.onMakeMove.attach(
-            () => this.refresh(`Your turn ${this._model.currentPlayer.color.toUpperCase()}`)
-        );
         this._model.onPassMove.attach(
             () => this.refresh(`Player couldn't make a move! Your turn ${this._model.currentPlayer.color.toUpperCase()}`)
         );
         this._model.onGameWon.attach(
-            () => this.refresh(``)
+            () => this.refresh(`${this._model.winner}`)
         );
     }
     refresh(message) {
@@ -65,26 +66,28 @@ export default class OthelloView {
         this.drawUi(message);
     }
     drawUi(message) {
-        this._model.possibleMovesList.forEach(move => {
-            let c = move.index & 0x07;
-            let r = move.index >> 3;
-            this.uiCtx.beginPath();
-            this.uiCtx.fillStyle = "rgba(236, 195, 74, 0.38)";
-            this.uiCtx.strokeStyle = "black";
-            this.uiCtx.rect(c * SIZE, r * SIZE, SIZE, SIZE);
-            this.uiCtx.stroke();
-            this.uiCtx.fill();
-            this.uiCtx.fillStyle = "red";
-            this.uiCtx.font = "20px Arial";
-            this.uiCtx.fillText(move.arrVulnerables.length.toString(), c * SIZE + SIZE / 2.5, r * SIZE + SIZE / 1.5);
-            this.uiCtx.fillStyle ="black";
-            this.uiCtx.font = "20px Arial";
-            this.uiCtx.fillText(message,50,430);
-            let bCount = this._model.playerList[0].pieceCount;
-            let wCount = this._model.playerList[1].pieceCount; 
-            this.uiCtx.fillText(`B:${bCount}        /       W:${wCount}            ${this._model.winner}`,5,470);
-            
-        });
+        if(this._model.currentPlayer.type=="Human"){
+            //Draw all possible moves
+            this._model.possibleMovesList.forEach(move => {
+                let c = move.index & 0x07;
+                let r = move.index >> 3;
+                this.uiCtx.beginPath();
+                this.uiCtx.fillStyle = "rgba(236, 195, 74, 0.38)";
+                this.uiCtx.strokeStyle = "black";
+                this.uiCtx.rect(c * SIZE, r * SIZE, SIZE, SIZE);
+                this.uiCtx.stroke();
+                this.uiCtx.fill();
+                this.uiCtx.fillStyle = "red";
+                this.uiCtx.font = "20px Arial";
+                this.uiCtx.fillText(move.arrVulnerables.length.toString(), c * SIZE + SIZE / 2.5, r * SIZE + SIZE / 1.5);
+            });
+        }
+        this.uiCtx.fillStyle = "black";
+        this.uiCtx.font = "20px Arial";
+        this.uiCtx.fillText(message, 50, 430);
+        let bCount = this._model.playerList[0].pieceCount;
+        let wCount = this._model.playerList[1].pieceCount;
+        this.uiCtx.fillText(`B:${bCount}        /       W:${wCount}            ${this._model.winner}`, 5, 470);
     }
     drawBg() {
         for (let i = 0; i < 8; i++) {

@@ -13,12 +13,28 @@
 <body>
     <div id="container">
         <input type="email" id="txtEmail" placeholder="Email">
-        <input type="password" id="txtPassword">
+        <input type="password" id="txtPassword" placeholder="Password">
         <input type="button" value="Log In" id="btnLogin" class="btn btn-action">
         <input type="button" value="Sign Up" id="btnSignUp" class="btn btn-secondary">
         <input type="button" value="Log Out" id="btnLogOut" class="btn btn-action hide">
     </div>
     <div id="menu">
+        <label>
+            Black Player:
+            <select name="blackTypeSelect" id="slctBlackType">
+                <option>Simple AI</option>
+                <option>Random AI</option>
+                <option>Human</option>
+            </select>
+        </label>
+        <label>
+            White Player:
+            <select name="whiteTypeSelect" id="slctWhiteType">
+                <option>Simple AI</option>
+                <option>Random AI</option>
+                <option>Human</option>
+            </select>
+        </label>
         <input type="button" value="Start" id="btnStart" class="btn btn-action">
 
     </div>
